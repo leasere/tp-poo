@@ -16,3 +16,10 @@ class Obra(BaseModel):
     name = CharField(max_length=80, unique=True)
     type = CharField(max_length=50)
     description = TextField()
+
+try:
+    sqlite_db.create_tables([Obra])
+    print("Tablas creadas correctamente")
+except OperationalError as operational_error:
+    print("Error al crear las tablas")
+    exit()
