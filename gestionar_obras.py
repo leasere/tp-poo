@@ -1,9 +1,12 @@
 import pandas as pd
+from pandas.errors import ParserError
 import numpy as np
+import csv
 from abc import ABC
 from abc import abstractmethod
 from peewee import *
 from modelo_orm import Obra
+from modelo_orm import NuevaObra
 
 
 sqlite_db = SqliteDatabase('obras_urbanas.db', pragmas={'journal_mode': 'wal'})
@@ -50,12 +53,17 @@ class GestionarObraImplementacion(GestionarObra):
     @classmethod
     def extraer_datos(cls, file_path):
         try:
-            df = pd.read_csv(file_path)
-            print("\n ### Datos extraídos ###")
-            # print(df.head())
+            df = pd.read_csv(file_path, sep=';', quotechar='"')
             return df
-        except pd.errors.ParserError as e:
+
+        except ParserError as e:
             print(f"Error al analizar el archivo CSV: {e}")
+            return None
+        except ValueError as ve:
+            print(f"Error en tipos de datos en el archivo CSV: {ve}")
+            return None
+        except Exception as ex:
+            print(f"Error inesperado al leer el archivo CSV: {ex}")
             return None
 
     @classmethod
@@ -70,30 +78,114 @@ class GestionarObraImplementacion(GestionarObra):
 
     @classmethod
     def limpiar_datos(cls, df):
-        # Verifica las columnas presentes en el DataFrame antes de manipularlo
-        print(df.columns)
 
-        # Convertir tipos de datos y limpiar NaNs como lo hiciste antes
-        # df['id'] = pd.to_numeric(df['id'], errors='coerce')
-        # Resto de las conversiones y limpiezas...
+        try:
+            columnas_a_eliminar = [
+                ',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,',
+                'Unnamed: 37', 'Unnamed: 38', 'Unnamed: 39', 'Unnamed: 40',
+                'Unnamed: 41', 'Unnamed: 42', 'Unnamed: 43', 'Unnamed: 44',
+                'Unnamed: 45', 'Unnamed: 46', 'Unnamed: 47', 'Unnamed: 48',
+                'Unnamed: 49', 'Unnamed: 50', 'Unnamed: 51', 'Unnamed: 52',
+                'Unnamed: 53', 'Unnamed: 54', 'Unnamed: 55', 'Unnamed: 56',
+                'Unnamed: 57', 'Unnamed: 58', 'Unnamed: 59', 'Unnamed: 60',
+                'Unnamed: 61', 'Unnamed: 62', 'Unnamed: 63', 'Unnamed: 64',
+                'Unnamed: 65', 'Unnamed: 66', 'Unnamed: 67', 'Unnamed: 68',
+                'Unnamed: 69', 'Unnamed: 70', 'Unnamed: 71', 'Unnamed: 72',
+                'Unnamed: 73', 'Unnamed: 74', 'Unnamed: 75', 'Unnamed: 76',
+                'Unnamed: 77', 'Unnamed: 78', 'Unnamed: 79', 'Unnamed: 80',
+                'Unnamed: 81', 'Unnamed: 82'
+            ]
 
-        return df 
+            df_clean = df.drop(columns=columnas_a_eliminar)
+            print(df_clean.columns)
+
+            return df_clean
+
+        except Exception as ex:
+            print(f"Error al limpiar datos: {ex}")
+            return None
+
+
 
     @classmethod
     def cargar_datos(cls, df):
-        pass
-        # Obra.create(name= "Nombre de una obra")
-        # for _, row in df.iterrows():
-        #     Obra.create(nombre=row['nombre'])
-        # print("Datos cargados en la base de datos")
+    
+        try:
+            for index, row in df.iterrows():
+                Obra.create(
+                    entorno = row['entorno'],
+                    nombre = row['nombre'],
+                    etapa = row['etapa'],
+                    tipo = row['tipo'],
+                    area_responsable = row['area_responsable'],
+                    descripcion = row['descripcion'],
+                    monto_contrato = row['monto_contrato'],
+                    comuna = row['comuna'],
+                    barrio = row['barrio'],
+                    direccion = row['direccion'],
+                    lat = row['lat'],
+                    lng = row['lng'],
+                    fecha_inicio = row['fecha_inicio'],
+                    fecha_fin_inicial = row['fecha_fin_inicial'],
+                    plazo_meses = row['plazo_meses'],
+                    porcentaje_avance = row['porcentaje_avance'],
+                    licitacion_oferta_empresa = row['licitacion_oferta_empresa'],
+                    licitacion_anio = row['licitacion_anio'],
+                    contratacion_tipo = row['contratacion_tipo'],
+                    nro_contratacion = row['nro_contratacion'],
+                    cuit_contratista = row['cuit_contratista'],
+                    beneficiarios = row['beneficiarios'],
+                    mano_obra = row['mano_obra'],
+                    compromiso = row['compromiso'],
+                    destacada = row['destacada'],
+                    ba_elige = row['ba_elige'],
+                    link_interno = row['link_interno'],
+                    pliego_descarga = row['pliego_descarga'],
+                    financiamiento = row['financiamiento'],
+                )
+        
+            print("Datos cargados correctamente en la base de datos.")
+        
+        except Exception as ex:
+            print(f"Error al cargar datos en la base de datos: {ex}")
 
     @classmethod
     def nueva_obra(cls):
         nombre = input("Ingrese el nombre de la obra: ")
-        nueva_obra = Obra.create(nombre=nombre)
-        print("Nueva obra creada:")
-        print(nueva_obra)
-        return nueva_obra
+        # nueva_obra = Obra.create(
+        #     entorno = row['entorno'],
+        #     nombre = row['nombre'],
+        #     etapa = row['etapa'],
+        #     tipo = row['tipo'],
+        #     area_responsable = row['area_responsable'],
+        #     descripcion = row['descripcion'],
+        #     monto_contrato = row['monto_contrato'],
+        #     comuna = row['comuna'],
+        #     barrio = row['barrio'],
+        #     direccion = row['direccion'],
+        #     lat = row['lat'],
+        #     lng = row['lng'],
+        #     fecha_inicio = row['fecha_inicio'],
+        #     fecha_fin_inicial = row['fecha_fin_inicial'],
+        #     plazo_meses = row['plazo_meses'],
+        #     porcentaje_avance = row['porcentaje_avance'],
+        #     licitacion_oferta_empresa = row['licitacion_oferta_empresa'],
+        #     licitacion_anio = row['licitacion_anio'],
+        #     contratacion_tipo = row['contratacion_tipo'],
+        #     nro_contratacion = row['nro_contratacion'],
+        #     cuit_contratista = row['cuit_contratista'],
+        #     beneficiarios = row['beneficiarios'],
+        #     mano_obra = row['mano_obra'],
+        #     compromiso = row['compromiso'],
+        #     destacada = row['destacada'],
+        #     ba_elige = row['ba_elige'],
+        #     link_interno = row['link_interno'],
+        #     pliego_descarga = row['pliego_descarga'],
+        #     financiamiento = row['financiamiento'],
+        # )
+        # print("Nueva obra creada:")
+        # print(nueva_obra)
+        # return nueva_obra
 
     @classmethod
     def obtener_indicadores(cls):
@@ -102,7 +194,7 @@ class GestionarObraImplementacion(GestionarObra):
 
 
 try:
-    sqlite_db.create_tables([Obra])
+    sqlite_db.create_tables([Obra, NuevaObra])
     print("Tablas creadas correctamente")
 except OperationalError as operational_error:
     print("Error al crear las tablas")
@@ -111,9 +203,9 @@ except OperationalError as operational_error:
 if __name__ == "__main__":
     GestionarObraImplementacion.conectar_db()
     GestionarObraImplementacion.mapear_orm()
-    df = GestionarObraImplementacion.extraer_datos('./observatorio-de-obras-urbanas.csv')
+    path = './observatorio-de-obras-urbanas.csv'
+    df = GestionarObraImplementacion.extraer_datos(path)
     df_clean = GestionarObraImplementacion.limpiar_datos(df)
     GestionarObraImplementacion.cargar_datos(df_clean)
-
     # GestionarObraImplementacion.obtener_indicadores()
-    #     GestionarObraImplementacion.nueva_obra()
+    # GestionarObraImplementacion.nueva_obra()

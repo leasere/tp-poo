@@ -42,8 +42,5 @@ class Obra(BaseModel):
     ba_elige = CharField()
     link_interno = CharField()
     pliego_descarga = CharField()
-    expediente_nro = CharField()
-    estudio_ambiental_descarga = CharField()
     financiamiento = CharField()
     
-    #agregar las columnas que faltan
