@@ -13,7 +13,42 @@ class BaseModel(Model):
     class Meta:
         database = sqlite_db
 
+
+class Entorno(BaseModel):
+    id = IntegerField(primary_key=True)
+    nombre = TextField()
+   
+class Etapa(BaseModel):
+    id = IntegerField(primary_key=True)
+    nombre = TextField()
+
+class Licitacion_anio(BaseModel):
+    id = IntegerField(primary_key=True)
+    nombre = TextField()
+
+class Contratacion_tipo(BaseModel):
+    id = IntegerField(primary_key=True)
+    nombre = TextField()
+
+class Tipo(BaseModel):
+    id = IntegerField(primary_key=True)
+    nombre = TextField()
+
+class Area_responsable(BaseModel):
+    id = IntegerField(primary_key=True)
+    nombre = TextField()
+
+class Comuna(BaseModel):
+    id = IntegerField(primary_key=True)
+    nombre = TextField()
+
+class Barrio(BaseModel):
+    id = IntegerField(primary_key=True)
+    nombre = TextField()
+
 class Obra(BaseModel):
+    id = IntegerField(primary_key=True)
+
     entorno = CharField()
     nombre = CharField()
     etapa = CharField()
@@ -43,4 +78,6 @@ class Obra(BaseModel):
     link_interno = CharField()
     pliego_descarga = CharField()
     financiamiento = CharField()
+
+    entorno = ForeignKeyField(Entorno, backref='obras')
     

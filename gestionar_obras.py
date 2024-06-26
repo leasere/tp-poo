@@ -5,8 +5,7 @@ import csv
 from abc import ABC
 from abc import abstractmethod
 from peewee import *
-from modelo_orm import Obra
-from modelo_orm import NuevaObra
+from modelo_orm import Obra, Entorno, Etapa, Tipo, Area_responsable, Comuna, Barrio, Licitacion_anio, Contratacion_tipo
 
 
 sqlite_db = SqliteDatabase('obras_urbanas.db', pragmas={'journal_mode': 'wal'})
@@ -112,8 +111,11 @@ class GestionarObraImplementacion(GestionarObra):
     
         try:
             for index, row in df.iterrows():
+
+                entorno, index = Entorno.get_or_create(nombre=row['entorno'])
+
                 Obra.create(
-                    entorno = row['entorno'],
+                    entorno = entorno,
                     nombre = row['nombre'],
                     etapa = row['etapa'],
                     tipo = row['tipo'],
@@ -143,7 +145,7 @@ class GestionarObraImplementacion(GestionarObra):
                     pliego_descarga = row['pliego_descarga'],
                     financiamiento = row['financiamiento'],
                 )
-        
+            
             print("Datos cargados correctamente en la base de datos.")
         
         except Exception as ex:
@@ -194,7 +196,7 @@ class GestionarObraImplementacion(GestionarObra):
 
 
 try:
-    sqlite_db.create_tables([Obra, NuevaObra])
+    sqlite_db.create_tables([Obra, Entorno, Etapa, Tipo, Area_responsable, Comuna, Barrio, Licitacion_anio, Contratacion_tipo])
     print("Tablas creadas correctamente")
 except OperationalError as operational_error:
     print("Error al crear las tablas")
