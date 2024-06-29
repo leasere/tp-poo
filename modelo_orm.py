@@ -80,4 +80,53 @@ class Obra(BaseModel):
     financiamiento = CharField()
 
     entorno = ForeignKeyField(Entorno, backref='obras')
-    
+
+    def nuevo_proyecto(self):
+        proyecto, created = Etapa.get_or_create(nombre="Proyecto")
+        self.etapa = proyecto
+        self.save()
+
+    def iniciar_contratacion(self, tipo_contratacion, nro_contratacion):
+        tipo_contratacion_obj, created = Contratacion_tipo.get_or_create(nombre=tipo_contratacion)
+        self.contratacion_tipo = tipo_contratacion_obj
+        self.nro_contratacion = nro_contratacion
+        self.save()
+
+    def adjudicar_obra(self):
+        adjudicacion, created = Etapa.get_or_create(nombre="Adjudicación")
+        self.etapa = adjudicacion
+        self.save()
+
+    def iniciar_obra(self, destacada, fecha_inicio, fecha_final, financiamiento_1, mano_de_obra):
+        # inicio, created = Etapa.get_or_create(nombre="Inicio de obra")
+        # iniciar_obra_obj, created = Obra.get_or_create(financiamiento=financiamiento_1)
+        # self.financiamiento = iniciar_obra_obj
+        # self.destacada = destacada
+        # self.fecha_inicio = fecha_inicio
+        # self.fecha_fin_inicial = fecha_final
+        # self.mano_obra = mano_de_obra
+        # self.save()
+        pass
+
+    def actualizar_porcentaje_avance(self, porcentaje):
+        self.porcentaje_avance = porcentaje
+        self.save()
+
+    def incrementar_plazo(self, dias):
+        self.plazo += dias
+        self.save()
+
+    def incrementar_mano_obra(self, cantidad):
+        self.mano_obra += cantidad
+        self.save()
+
+    def finalizar_obra(self):
+        finalizacion, created = Etapa.get_or_create(nombre="Finalización")
+        self.etapa = finalizacion
+        self.porcentaje_avance = 100
+        self.save()
+
+    def rescindir_obra(self):
+        rescindir, created = Etapa.get_or_create(nombre="Rescindida")
+        self.etapa = rescindir
+        self.save()
