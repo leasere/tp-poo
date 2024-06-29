@@ -162,43 +162,48 @@ class GestionarObraImplementacion(GestionarObra):
     def nueva_obra(cls): 
         try:
 
-            entorno = input("Ingrese el entorno de la obra: ") 
-            if not Obra.select().where(Obra.entorno == entorno).exists():
-                print("No es un tipo de contratación válido")
+            entorno = input("Ingrese el entorno de la obra: ")
+         
+            if not Entorno.select().where(Entorno.nombre == entorno).exists():
+                print("No es un entorno válido")
             else:
-                entorno, i = Entorno.get_or_create(nombre=entorno)
+                entorno, _ = Entorno.get_or_create(nombre=entorno)
     
             nombre = input("Ingrese el nombre: ") 
             tipo = input("Ingrese el tipo de obra: ") 
 
-            if not Obra.select().where(Obra.tipo == tipo).exists():
+            if not Tipo.select().where(Tipo.nombre == tipo).exists():
                 print("No es un tipo de obra válido")
+                return
             else:
-                tipo, i = Barrio.get_or_create(nombre=tipo)
+                tipo, _ = Tipo.get_or_create(nombre=tipo)
     
             area_responsable = input("Ingrese el área responsable: ") 
 
-            if not Obra.select().where(Obra.area_responsable == area_responsable).exists():
-                print("No es un tipo de contratación válido")
+            if not Area_responsable.select().where(Area_responsable.nombre == area_responsable).exists():
+                print("No es un área responsable válida")
+                return
             else:
-                area_responsable, i = Area_responsable.get_or_create(nombre=area_responsable)
+                area_responsable, _ = Area_responsable.get_or_create(nombre=area_responsable)
     
             descripcion = input("Ingrese la descripción: ") 
             monto_contrato = input("Ingrese el monto del contrato: ") 
     
             comuna = input("Ingrese la comuna: ") 
 
-            if not Obra.select().where(Obra.comuna == comuna).exists():
-                print("No es un tipo de contratación válido")
+            if not Comuna.select().where(Comuna.nombre == comuna).exists():
+                print("No es una comuna válida")
+                return
             else:
-                comuna, i = Comuna.get_or_create(nombre=comuna)
+                comuna, _ = Comuna.get_or_create(nombre=comuna)
     
             barrio = input("Ingrese el barrio: ") 
 
-            if not Obra.select().where(Obra.barrio == barrio).exists():
-                print("No es un tipo de contratación válido")
+            if not Barrio.select().where(Barrio.nombre == barrio).exists():
+                print("No es un barrio válido")
+                return
             else:
-                barrio, i = Barrio.get_or_create(nombre=barrio)
+                barrio, _ = Barrio.get_or_create(nombre=barrio)
     
             direccion = input("Ingrese la dirección: ") 
             lat = input("Ingrese la latitud: ") 
@@ -210,17 +215,20 @@ class GestionarObraImplementacion(GestionarObra):
     
             licitacion_anio = input("Ingrese el año de licitación: ") 
 
-            if not Obra.select().where(Obra.licitacion_anio == licitacion_anio).exists():
-                print("No es un tipo de contratación válido")
+            if not Licitacion_anio.select().where(Licitacion_anio.nombre == licitacion_anio).exists():
+                print("No es un año de licitación válido")
+                return
             else:
-                licitacion_anio, i = Licitacion_anio.get_or_create(nombre=licitacion_anio)
+                licitacion_anio, _ = Licitacion_anio.get_or_create(nombre=licitacion_anio)
     
             contratacion_tipo = input("Ingrese el tipo de contratación: ") 
 
-            if not Obra.select().where(Obra.contratacion_tipo == contratacion_tipo).exists():
+            if not Contratacion_tipo.select().where(Contratacion_tipo.nombre == contratacion_tipo).exists():
                 print("No es un tipo de contratación válido")
+                return
             else:
-                contratacion_tipo, i = Contratacion_tipo.get_or_create(nombre=contratacion_tipo)
+                contratacion_tipo, _ = Contratacion_tipo.get_or_create(nombre=contratacion_tipo)
+    
     
             nro_contratacion = input("Ingrese el número de contratación: ") 
             cuit_contratista = input("Ingrese el CUIT del contratista: ") 
@@ -304,6 +312,7 @@ if __name__ == "__main__":
         obra_1.incrementar_plazo(555)
         obra_1.incrementar_mano_obra(555)
         obra_1.finalizar_obra()
+        obra_1.rescindir_obra()
 
         obra_2.nuevo_proyecto()
         obra_2.iniciar_contratacion("Convenio", 2000)
@@ -313,7 +322,7 @@ if __name__ == "__main__":
         obra_2.incrementar_plazo(555)
         obra_2.incrementar_mano_obra(555)
         obra_2.finalizar_obra()
-
+        obra_2.rescindir_obra()
 
 
     pasar_etapas(obra1, obra2)
