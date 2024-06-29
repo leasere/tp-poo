@@ -63,7 +63,7 @@ class Obra(BaseModel):
     lng = CharField()
     fecha_inicio = CharField()
     fecha_fin_inicial = CharField()
-    plazo_meses = CharField()
+    plazo_meses = IntegerField(null=True)
     porcentaje_avance = CharField()
     licitacion_oferta_empresa = CharField()
     licitacion_anio = CharField()
@@ -71,7 +71,7 @@ class Obra(BaseModel):
     nro_contratacion= CharField()
     cuit_contratista = CharField()
     beneficiarios = CharField()
-    mano_obra = CharField()
+    mano_obra = IntegerField(null=True)
     compromiso = CharField()
     destacada = CharField()
     ba_elige = CharField()
@@ -98,22 +98,26 @@ class Obra(BaseModel):
         self.save()
 
     def iniciar_obra(self, destacada, fecha_inicio, fecha_final, financiamiento_1, mano_de_obra):
-        # inicio, created = Etapa.get_or_create(nombre="Inicio de obra")
-        # iniciar_obra_obj, created = Obra.get_or_create(financiamiento=financiamiento_1)
-        # self.financiamiento = iniciar_obra_obj
-        # self.destacada = destacada
-        # self.fecha_inicio = fecha_inicio
-        # self.fecha_fin_inicial = fecha_final
-        # self.mano_obra = mano_de_obra
-        # self.save()
-        pass
+        try:
+            inicio_etapa, created = Etapa.get_or_create(nombre="Inicio de obra")
+
+            self.destacada = destacada
+            self.fecha_inicio = fecha_inicio
+            self.fecha_fin_inicial = fecha_final
+            self.financiamiento = financiamiento_1
+            self.mano_obra = mano_de_obra
+            self.etapa = inicio_etapa
+            self.save()
+            print(f"Obra '{self.nombre}' iniciada correctamente en la etapa '{self.etapa.nombre}'")
+        except Exception as ex:
+            print(f"Error al iniciar la obra: {ex}")
 
     def actualizar_porcentaje_avance(self, porcentaje):
         self.porcentaje_avance = porcentaje
         self.save()
 
-    def incrementar_plazo(self, dias):
-        self.plazo += dias
+    def incrementar_plazo(self, meses):
+        self.plazo_meses += meses
         self.save()
 
     def incrementar_mano_obra(self, cantidad):

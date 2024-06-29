@@ -96,7 +96,6 @@ class GestionarObraImplementacion(GestionarObra):
             ]
 
             df_clean = df.drop(columns=columnas_a_eliminar)
-            # print(df_clean.columns)
 
             return df_clean
 
@@ -162,6 +161,7 @@ class GestionarObraImplementacion(GestionarObra):
     @classmethod 
     def nueva_obra(cls): 
         try:
+
             entorno = input("Ingrese el entorno de la obra: ") 
             if not Obra.select().where(Obra.entorno == entorno).exists():
                 print("No es un tipo de contratación válido")
@@ -205,7 +205,6 @@ class GestionarObraImplementacion(GestionarObra):
             lng = input("Ingrese la longitud: ") 
             fecha_inicio = input("Ingrese la fecha de inicio: ") 
             fecha_fin_inicial = input("Ingrese la fecha de fin inicial: ") 
-            plazo_meses = input("Ingrese el plazo en meses: ") 
             porcentaje_avance = input("Ingrese el porcentaje de avance: ") 
             licitacion_oferta_empresa = input("Ingrese la licitación/empresa ofertante: ") 
     
@@ -217,7 +216,6 @@ class GestionarObraImplementacion(GestionarObra):
                 licitacion_anio, i = Licitacion_anio.get_or_create(nombre=licitacion_anio)
     
             contratacion_tipo = input("Ingrese el tipo de contratación: ") 
-            # contratacion_tipo, i = Contratacion_tipo.get(Contratacion_tipo.tipo == contratacion_tipo_nombre)
 
             if not Obra.select().where(Obra.contratacion_tipo == contratacion_tipo).exists():
                 print("No es un tipo de contratación válido")
@@ -227,7 +225,6 @@ class GestionarObraImplementacion(GestionarObra):
             nro_contratacion = input("Ingrese el número de contratación: ") 
             cuit_contratista = input("Ingrese el CUIT del contratista: ") 
             beneficiarios = input("Ingrese los beneficiarios: ") 
-            mano_obra = input("Ingrese la mano de obra: ") 
             compromiso = input("Ingrese el compromiso: ") 
             destacada = input("Ingrese si es destacada: ") 
             ba_elige = input("Ingrese si es elegida por BA: ") 
@@ -235,8 +232,8 @@ class GestionarObraImplementacion(GestionarObra):
             pliego_descarga = input("Ingrese el pliego de descarga: ") 
             financiamiento = input("Ingrese el financiamiento: ") 
     
-            estado = input("Ingrese el estado de la obra: ") 
-    
+            estado = input("Ingrese el estado de la obra: ")
+
             nueva_obra = Obra.create( 
                 entorno=entorno, 
                 nombre=nombre,
@@ -251,7 +248,7 @@ class GestionarObraImplementacion(GestionarObra):
                 lng=lng, 
                 fecha_inicio=fecha_inicio, 
                 fecha_fin_inicial=fecha_fin_inicial, 
-                plazo_meses=plazo_meses, 
+                plazo_meses=0,
                 porcentaje_avance=porcentaje_avance, 
                 licitacion_oferta_empresa=licitacion_oferta_empresa, 
                 licitacion_anio=licitacion_anio, 
@@ -259,7 +256,7 @@ class GestionarObraImplementacion(GestionarObra):
                 nro_contratacion=nro_contratacion, 
                 cuit_contratista=cuit_contratista, 
                 beneficiarios=beneficiarios, 
-                mano_obra=mano_obra, 
+                mano_obra=0, 
                 compromiso=compromiso, 
                 destacada=destacada, 
                 ba_elige=ba_elige, 
@@ -271,11 +268,6 @@ class GestionarObraImplementacion(GestionarObra):
             ) 
             
             nueva_obra.save()
-            print("Nueva obra creada correctamente")
-            if isinstance(nueva_obra, Obra):
-                print("El objeto es una instancia de GestionarObraImplementacion")
-            else:
-                print("El objeto no es una instancia de GestionarObraImplementacion")
             return nueva_obra
             
         except Exception as e:
@@ -293,6 +285,7 @@ except OperationalError as operational_error:
     exit()
 
 if __name__ == "__main__":
+
     GestionarObraImplementacion.conectar_db()
     GestionarObraImplementacion.mapear_orm()
     path = './observatorio-de-obras-urbanas.csv'
@@ -300,30 +293,28 @@ if __name__ == "__main__":
     df_clean = GestionarObraImplementacion.limpiar_datos(df)
     GestionarObraImplementacion.cargar_datos(df_clean)
     obra1 = GestionarObraImplementacion.nueva_obra()
-    # obra2 = GestionarObraImplementacion.nueva_obra()
+    obra2 = GestionarObraImplementacion.nueva_obra()
 
-    if isinstance(obra1, Obra):
-        print("El objeto es una instancia de Obra")
-    else:
-        print("El objeto no es una instancia de Obra")
-   
-    def pasar_etapas(obra_1):
+    def pasar_etapas(obra_1, obra_2):
         obra_1.nuevo_proyecto()
         obra_1.iniciar_contratacion("Convenio", 2000)
         obra_1.adjudicar_obra()
-        obra_1.iniciar_obra("SI", "10/10/9663", "10/10/1990", "Préstamo BIRF 0303-AR", 2)
-        obra_1.actualizar_porcentaje_avance(50)
+        obra_1.iniciar_obra("SI", "8/02/2026", "10/10/2080", "Préstamo BIRF 0303-AR", 2)
+        obra_1.actualizar_porcentaje_avance(99)
+        obra_1.incrementar_plazo(555)
+        obra_1.incrementar_mano_obra(555)
         obra_1.finalizar_obra()
-        obra_1.rescindir_obra()
 
-        # obra_2.nuevo_proyecto()
-        # obra_2.iniciar_contratacion()
-        # obra_2.adjudicar_obra()
-        # obra_2.iniciar_obra()
-        # obra_2.actualizar_porcentaje_avance(25)
-        # obra_2.finalizar_obra()
+        obra_2.nuevo_proyecto()
+        obra_2.iniciar_contratacion("Convenio", 2000)
+        obra_2.adjudicar_obra()
+        obra_2.iniciar_obra("SI", "09/01/2025", "10/10/2150", "Préstamo BIRF 999-AR", 90)
+        obra_2.actualizar_porcentaje_avance(99)
+        obra_2.incrementar_plazo(555)
+        obra_2.incrementar_mano_obra(555)
+        obra_2.finalizar_obra()
 
-    # obra1.iniciar_contratacion("Convenio", 2000)
 
-    pasar_etapas(obra1)
+
+    pasar_etapas(obra1, obra2)
     # GestionarObraImplementacion.obtener_indicadores()
