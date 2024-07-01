@@ -80,6 +80,14 @@ class Obra(BaseModel):
     financiamiento = CharField()
 
     entorno = ForeignKeyField(Entorno, backref='obras')
+    area_responsable = ForeignKeyField(Area_responsable, backref='obras')
+    barrio = ForeignKeyField(Barrio, backref='obras')
+    comuna = ForeignKeyField(Comuna, backref='obras')
+    contratacion_tipo = ForeignKeyField(Contratacion_tipo, backref='obras')
+    etapa = ForeignKeyField(Etapa, backref='obras')
+    licitacion_anio = ForeignKeyField(Licitacion_anio, backref='obras')
+    tipo = ForeignKeyField(Tipo, backref='obras')
+    # comunaBarrio = ForeignKeyField(Barrio, backref='comuna')
 
     def nuevo_proyecto(self):
         proyecto, created = Etapa.get_or_create(nombre="Proyecto")

@@ -303,6 +303,8 @@ if __name__ == "__main__":
     GestionarObraImplementacion.cargar_datos(df_clean)
     obra1 = GestionarObraImplementacion.nueva_obra()
     obra2 = GestionarObraImplementacion.nueva_obra()
+    # GestionarObraImplementacion.obtener_indicadores()
+
 
     def pasar_etapas(obra_1, obra_2):
         obra_1.nuevo_proyecto()
@@ -327,83 +329,5 @@ if __name__ == "__main__":
 
 
     pasar_etapas(obra1, obra2)
-    # GestionarObraImplementacion.obtener_indicadores()
 
-class GestionarObra:
-    @classmethod
-    def obtener_indicadores(cls):
-        
-        # a. Listado de todas las áreas responsables
-        areas_responsables = cls.obtener_areas_responsables()
 
-        # b. Listado de todos los tipos de obra
-        tipos_de_obra = cls.obtener_tipos_de_obra()
-
-        # c. Cantidad de obras que se encuentran en cada etapa
-        cantidad_por_etapa = cls.cantidad_obras_por_etapa()
-
-        # d. Cantidad de obras y monto total de inversión por tipo de obra
-        cantidad_inversion_por_tipo = cls.cantidad_inversion_por_tipo()
-
-        # e. Listado de todos los barrios pertenecientes a las comunas 1, 2 y 3
-        barrios_comunas_1_2_3 = cls.obtener_barrios_comunas_1_2_3()
-
-        # f. Cantidad de obras finalizadas y monto total de inversión en la comuna 1
-        obras_finalizadas_comuna_1 = cls.obras_finalizadas_en_comuna(1)
-        cantidad_finalizadas_comuna_1 = len(obras_finalizadas_comuna_1)
-        inversion_total_comuna_1 = sum(obra.inversion for obra in obras_finalizadas_comuna_1)
-
-        # g. Cantidad de obras finalizadas en un plazo menor o igual a 24 meses
-        obras_finalizadas_24_meses = cls.obras_finalizadas_en_plazo(24)
-        cantidad_finalizadas_24_meses = len(obras_finalizadas_24_meses)
-
-        # h. Porcentaje total de obras finalizadas
-        total_obras = cls.total_obras()
-        obras_finalizadas = cls.obras_finalizadas()
-        porcentaje_obras_finalizadas = (obras_finalizadas / total_obras) * 100 if total_obras > 0 else 0
-
-        # i. Cantidad total de mano de obra empleada
-        mano_de_obra_total = cls.mano_de_obra_total()
-
-        # j. Monto total de inversión
-        inversion_total = cls.inversion_total()
-
-        # Mostrar resultados por consola
-        print("a. Listado de todas las áreas responsables:")
-        for area in areas_responsables:
-            print(area)
-
-        print("\nb. Listado de todos los tipos de obra:")
-        for tipo in tipos_de_obra:
-            print(tipo)
-
-        print("\nc. Cantidad de obras que se encuentran en cada etapa:")
-        for etapa, cantidad in cantidad_por_etapa.items():
-            print(f"{etapa}: {cantidad}")
-
-        print("\nd. Cantidad de obras y monto total de inversión por tipo de obra:")
-        for tipo, info in cantidad_inversion_por_tipo.items():
-            cantidad = info['cantidad']
-            inversion = info['inversion']
-            print(f"{tipo}: {cantidad} obras, Inversión total: {inversion}")
-
-        print("\ne. Listado de todos los barrios pertenecientes a las comunas 1, 2 y 3:")
-        for barrio in barrios_comunas_1_2_3:
-            print(barrio)
-
-        print("\nf. Cantidad de obras finalizadas y monto total de inversión en la comuna 1:")
-        print(f"Obras finalizadas: {cantidad_finalizadas_comuna_1}, Inversión total: {inversion_total_comuna_1}")
-
-        print("\ng. Cantidad de obras finalizadas en un plazo menor o igual a 24 meses:")
-        print(f"Obras finalizadas en <= 24 meses: {cantidad_finalizadas_24_meses}")
-
-        print("\nh. Porcentaje total de obras finalizadas:")
-        print(f"{porcentaje_obras_finalizadas}%")
-
-        print("\ni. Cantidad total de mano de obra empleada:")
-        print(mano_de_obra_total)
-
-        print("\nj. Monto total de inversión:")
-        print(inversion_total)
-
-GestionarObra.obtener_indicadores()
