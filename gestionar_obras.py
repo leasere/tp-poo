@@ -162,48 +162,50 @@ class GestionarObraImplementacion(GestionarObra):
     def nueva_obra(cls): 
         try:
 
-            entorno = input("Ingrese el entorno de la obra: ")
-         
-            if not Entorno.select().where(Entorno.nombre == entorno).exists():
-                print("No es un entorno válido")
-            else:
-                entorno, _ = Entorno.get_or_create(nombre=entorno)
+            entorno = input("Ingrese el entorno de la obra existente: ")
+            entorno = Entorno.select().where(Entorno.nombre == entorno).exists()
+            while not entorno:
+                entorno = input("No es un entorno válido intente nuevamente: ")
+                entorno = Entorno.select().where(Entorno.nombre == entorno).exists()
+            entorno, _ = Entorno.get_or_create(nombre=entorno)
+            print("¡Ingresado correctamente!")
     
             nombre = input("Ingrese el nombre: ") 
-            tipo = input("Ingrese el tipo de obra: ") 
 
-            if not Tipo.select().where(Tipo.nombre == tipo).exists():
-                print("No es un tipo de obra válido")
-                return
-            else:
-                tipo, _ = Tipo.get_or_create(nombre=tipo)
-    
-            area_responsable = input("Ingrese el área responsable: ") 
+            tipo = input("Ingrese el tipo de obra existente: ")
+            tipo = Tipo.select().where(Tipo.nombre == tipo).exists()
+            while not tipo:
+                tipo = input("No es un tipo válido intente nuevamente: ")
+                tipo = Tipo.select().where(Tipo.nombre == tipo).exists()
+            tipo, _ = Tipo.get_or_create(nombre=tipo)
+            print("¡Ingresado correctamente!")
 
-            if not Area_responsable.select().where(Area_responsable.nombre == area_responsable).exists():
-                print("No es un área responsable válida")
-                return
-            else:
-                area_responsable, _ = Area_responsable.get_or_create(nombre=area_responsable)
+            area_responsable = input("Ingrese el área responsable existente: ")
+            area_responsable = Area_responsable.select().where(Area_responsable.nombre == area_responsable).exists()
+            while not area_responsable:
+                area_responsable = input("No es un area responsable válido intente nuevamente: ")
+                area_responsable = Area_responsable.select().where(Area_responsable.nombre == area_responsable).exists()
+            area_responsable, _ = Area_responsable.get_or_create(nombre=area_responsable)
+            print("¡Ingresado correctamente!")
     
-            descripcion = input("Ingrese la descripción: ") 
-            monto_contrato = input("Ingrese el monto del contrato: ") 
-    
-            comuna = input("Ingrese la comuna: ") 
+            descripcion = input("Ingrese la descripción : ") 
+            monto_contrato = input("Ingrese el monto del contrato: ")
 
-            if not Comuna.select().where(Comuna.nombre == comuna).exists():
-                print("No es una comuna válida")
-                return
-            else:
-                comuna, _ = Comuna.get_or_create(nombre=comuna)
+            comuna = input("Ingrese la comuna existente: ")
+            comuna = Comuna.select().where(Comuna.nombre == comuna).exists()
+            while not comuna:
+                comuna = input("No es un comuna válido intente nuevamente: ")
+                comuna = Comuna.select().where(Comuna.nombre == comuna).exists()
+            comuna, _ = Comuna.get_or_create(nombre=comuna)
+            print("¡Ingresado correctamente!")
     
-            barrio = input("Ingrese el barrio: ") 
-
-            if not Barrio.select().where(Barrio.nombre == barrio).exists():
-                print("No es un barrio válido")
-                return
-            else:
-                barrio, _ = Barrio.get_or_create(nombre=barrio)
+            barrio = input("Ingrese el barrio existente: ")
+            barrio = Barrio.select().where(Barrio.nombre == barrio).exists()
+            while not barrio:
+                barrio = input("No es un barrio válido intente nuevamente: ")
+                barrio = Barrio.select().where(Barrio.nombre == barrio).exists()
+            barrio, _ = Barrio.get_or_create(nombre=barrio)
+            print("¡Ingresado correctamente!")
     
             direccion = input("Ingrese la dirección: ") 
             lat = input("Ingrese la latitud: ") 
@@ -213,22 +215,21 @@ class GestionarObraImplementacion(GestionarObra):
             porcentaje_avance = input("Ingrese el porcentaje de avance: ") 
             licitacion_oferta_empresa = input("Ingrese la licitación/empresa ofertante: ") 
     
-            licitacion_anio = input("Ingrese el año de licitación: ") 
-
-            if not Licitacion_anio.select().where(Licitacion_anio.nombre == licitacion_anio).exists():
-                print("No es un año de licitación válido")
-                return
-            else:
-                licitacion_anio, _ = Licitacion_anio.get_or_create(nombre=licitacion_anio)
+            licitacion_anio = input("Ingrese el año de licitación existente: ") 
+            licitacion_anio = Licitacion_anio.select().where(Licitacion_anio.nombre == licitacion_anio).exists()
+            while not licitacion_anio:
+                licitacion_anio = input("No es un año de licitación válido intente nuevamente: ")
+                licitacion_anio = Licitacion_anio.select().where(Licitacion_anio.nombre == licitacion_anio).exists()
+            licitacion_anio, _ = Licitacion_anio.get_or_create(nombre=licitacion_anio)
+            print("¡Ingresado correctamente!")
     
-            contratacion_tipo = input("Ingrese el tipo de contratación: ") 
-
-            if not Contratacion_tipo.select().where(Contratacion_tipo.nombre == contratacion_tipo).exists():
-                print("No es un tipo de contratación válido")
-                return
-            else:
-                contratacion_tipo, _ = Contratacion_tipo.get_or_create(nombre=contratacion_tipo)
-    
+            contratacion_tipo = input("Ingrese el tipo de contratación existente: ")
+            contratacion_tipo = Contratacion_tipo.select().where(Contratacion_tipo.nombre == contratacion_tipo).exists()
+            while not contratacion_tipo:
+                contratacion_tipo = input("No es un tipo de contratación válido intente nuevamente: ")
+                contratacion_tipo = Contratacion_tipo.select().where(Contratacion_tipo.nombre == contratacion_tipo).exists()
+            contratacion_tipo, _ = Contratacion_tipo.get_or_create(nombre=contratacion_tipo)
+            print("¡Ingresado correctamente!")
     
             nro_contratacion = input("Ingrese el número de contratación: ") 
             cuit_contratista = input("Ingrese el CUIT del contratista: ") 
