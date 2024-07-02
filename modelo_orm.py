@@ -45,6 +45,7 @@ class Comuna(BaseModel):
 class Barrio(BaseModel):
     id = IntegerField(primary_key=True)
     nombre = TextField()
+    # comuna = ForeignKeyField(Comuna, backref='barrios')
 
 class Obra(BaseModel):
     id = IntegerField(primary_key=True)

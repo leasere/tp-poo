@@ -282,8 +282,24 @@ class GestionarObraImplementacion(GestionarObra):
         except Exception as e:
             print(f"Error al crear la nueva obra: {e}")
 
+    @classmethod
     def obtener_indicadores(cls):
-        pass
+        
+        print("Listado de todas las áreas responsables:")
+        areas = Area_responsable.select()
+        for area in areas:
+            print(area.nombre)
+
+        print("\nListado de todos los tipos de obra:")
+        tipos = Tipo.select()
+        for tipo in tipos:
+            print(tipo.nombre)
+
+        print("\nCantidad de obras que se encuentran en cada etapa:")
+        etapas = Etapa.select()
+        for etapa in etapas:
+            cantidad = Obra.select().where(Obra.etapa == etapa).count()
+            print(f"{etapa.nombre}: {cantidad}")
 
 
 try:
@@ -303,7 +319,7 @@ if __name__ == "__main__":
     GestionarObraImplementacion.cargar_datos(df_clean)
     obra1 = GestionarObraImplementacion.nueva_obra()
     obra2 = GestionarObraImplementacion.nueva_obra()
-    # GestionarObraImplementacion.obtener_indicadores()
+    GestionarObraImplementacion.obtener_indicadores()
 
 
     def pasar_etapas(obra_1, obra_2):
@@ -328,6 +344,6 @@ if __name__ == "__main__":
         obra_2.rescindir_obra()
 
 
-    pasar_etapas(obra1, obra2)
+    # pasar_etapas(obra1, obra2)
 
 
