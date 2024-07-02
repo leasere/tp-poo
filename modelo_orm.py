@@ -45,7 +45,6 @@ class Comuna(BaseModel):
 class Barrio(BaseModel):
     id = IntegerField(primary_key=True)
     nombre = TextField()
-    # comuna = ForeignKeyField(Comuna, backref='barrios')
 
 class Obra(BaseModel):
     id = IntegerField(primary_key=True)
@@ -88,7 +87,6 @@ class Obra(BaseModel):
     etapa = ForeignKeyField(Etapa, backref='obras')
     licitacion_anio = ForeignKeyField(Licitacion_anio, backref='obras')
     tipo = ForeignKeyField(Tipo, backref='obras')
-    # comunaBarrio = ForeignKeyField(Barrio, backref='comuna')
 
     def nuevo_proyecto(self):
         proyecto, created = Etapa.get_or_create(nombre="Proyecto")

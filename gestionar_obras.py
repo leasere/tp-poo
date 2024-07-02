@@ -344,6 +344,6 @@ if __name__ == "__main__":
         obra_2.rescindir_obra()
 
 
-    # pasar_etapas(obra1, obra2)
+    pasar_etapas(obra1, obra2)
 
 
